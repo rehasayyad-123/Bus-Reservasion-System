@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="./login.css">
+</head>
+<body>
+  <div class="login-container">
+    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="avatar" alt="User Avatar">
+    
+    <form action="./login.php" method="POST">
+      <div class="input-group">
+        <input type="text" name="username" placeholder="Username" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" id="password" placeholder="Password" required>
+        <span onclick="togglePassword()">👁️</span>
+      </div>
+
+      
+
+      <button type="submit" class="login-btn">Login</button>
+
+      <div class="register-link">
+        Don't have an account? <a href="#">Register</a>
+      </div>
+    </form>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
+
+

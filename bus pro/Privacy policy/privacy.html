@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSRTC - Privacy Policy</title>
+    <!-- Use Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* A simple style for the modal-like container */
+        .policy-container {
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex items-center justify-center min-h-screen p-4">
+
+    <!-- The main container, styled to look like the image -->
+    <div class="policy-container w-full bg-white shadow-lg rounded-lg border border-gray-200">
+      
+         <header class="navbar">
+        <a href="../Home.html">Home</a> 
+       <style>
+       .navbar{
+  text-align: center;
+  background-color: aqua;
+  font-weight: 900;
+  font-size: xx-large;
+}
+</style>
+</header>
+
+
+        <!-- Header -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+            <h1 class="text-xl font-semibold text-gray-800">MSRTC - Privacy Policy</h1>
+            <!-- A placeholder close button, as seen in the image -->
+            <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="p-6 text-gray-700 leading-relaxed" id="policy-content">
+            <!-- Privacy policy content will be loaded here by JavaScript -->
+            <p>Loading privacy policy...</p>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for fetching and displaying the privacy policy content.
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- SIMULATED PHP BACKEND DATA ---
+            // This is a JSON object that a real PHP script would generate.
+            // A PHP file (e.g., `get_policy.php`) would fetch this text from a database
+            // or a file and return it as a JSON response.
+            const simulatedPhpResponse = {
+                content: `
+                    As a general rule, this portal does not automatically capture any specific personal information from you, (like name, phone number or e-mail address), that allows us to identify you individually. This portal records your visit and logs the following information for statistical purposes, such as Internet Protocol (IP) addresses, domain name, browser type, operating system, the date and time of the visit and the pages visited. We make no attempt to link these addresses with the identity of individuals visiting our site unless an attempt to damage the site has been detected We will not identify users or their browsing activities, except when a law enforcement agency may exercise a warrant to inspect the service provider's logs. If MSRTC portal requests you to provide personal information, you will be informed how it will be used if you choose to give it and adequate security measures will be taken to protect your personal information.
+                `
+            };
+
+            // This is the function that simulates a fetch call to a PHP endpoint.
+            // In a real application, you would replace this with an actual fetch call.
+            const fetchPrivacyPolicy = async () => {
+                try {
+                    // Replace this with a real fetch call, e.g.:
+                    // const response = await fetch('get_policy.php');
+                    // const data = await response.json();
+                    
+                    // For this demonstration, we use our simulated data directly.
+                    const data = simulatedPhpResponse;
+                    
+                    // Get the content area and insert the text
+                    const policyContentDiv = document.getElementById('policy-content');
+                    if (data.content) {
+                        policyContentDiv.innerHTML = `<p>${data.content}</p>`;
+                    } else {
+                        policyContentDiv.innerHTML = `<p>Error: Could not load the privacy policy.</p>`;
+                    }
+                } catch (error) {
+                    console.error("Error fetching privacy policy:", error);
+                    const policyContentDiv = document.getElementById('policy-content');
+                    policyContentDiv.innerHTML = `<p>An error occurred. Please try again later.</p>`;
+                }
+            };
+
+            // Call the function to load the content
+            fetchPrivacyPolicy();
+        });
+    </script>
+
+</body>
+</html>

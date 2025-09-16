@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions</title>
+    <!-- Use Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS for the chevron icons */
+        .chevron {
+            transition: transform 0.3s ease-in-out;
+        }
+        .rotated {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-10">
+
+            <header class="navbar">
+        <a href="../Home.html">Home</a> 
+       <style>
+       .navbar{
+  text-align: center;
+  background-color: aqua;
+  font-weight: 900;
+  font-size: xx-large;
+}
+</style>
+</header>
+
+        <!-- Main Heading -->
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 mt-4 md:mt-8">Frequently Asked Questions</h1>
+
+        <!-- Container for all FAQ items -->
+        <div id="faq-container" class="space-y-4">
+            <!-- FAQ items will be dynamically inserted here by JavaScript -->
+        </div>
+
+    </div>
+
+    <script>
+        // JavaScript for handling the FAQ accordion functionality
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- SIMULATED PHP BACKEND DATA ---
+            // This JSON data represents what a PHP script might return from a database.
+            // In a real-world scenario, you would use `fetch()` to get this data from a PHP file.
+            const faqData = [
+                {
+                    question: "Q.1 - I could not register my User Id, so what can I do?",
+                    answer: "Ans. For registration screen, few fields are mandatory. Please check the information filled properly before proceeding for registration. Please ensure that only alphabets A to Z & numbers 0 to 9 are used in upper case or lower case while generating user id and password."
+                },
+                {
+                    question: "Q.2 - How many days before can I reserve a e-ticket?",
+                    answer: "Ans. You can reserve your e-ticket through internet before 120 days from expected journey date (excluding date of journey). Seat reservation booking facility will be closed before one hour on proposed journey date and schedule departure time of bus service or up to the time of printing of reservation chart, which ever is earlier."
+                },
+                {
+                    question: "Q.3 - What are the e-ticket booking hours?",
+                    answer: "Ans. e-ticket booking / cancellation timings are 00:05 hrs to 23:55 hrs."
+                },
+                {
+                    question: "Q.4 - How can I search Boarding (from) stop / Destination (to) stop name or code?",
+                    answer: "Ans. Please note please select three letters of bus stop name or bus stop code & from stop to stop field on your screen and click the search button (symbol of magnifying glass). After this, view window will be pop up with matching bus station names and bus stops. You can select desired bus stop from this view window by clicking on the bus stop code."
+                },
+                {
+                    question: "Q.5 - I do not know the names of bus stations situated at big cities like Mumbai, Pune etc, what can I do?",
+                    answer: "Ans. The system takes care of such problems, you have to enter the city name in 'from stop' / 'to stop' entry. The Bus services departing from all bus stations in the city will be displayed."
+                },
+                {
+                    question: "Q.6 - Can I book concessional e-tickets?",
+                    answer: "Ans. Concessional seats / ticket are available for senior citizen, Aard armor, military veteran, maha samman award, handicap on e-ticket booking. The conductor will verify the photo identity which is mentioned in the ticket. Concessional fares tickets can be booked at MSRTC bus stations or from any authorized booking agents."
+                },
+                {
+                    question: "Q.7 - Till when can I cancel my e-ticket?",
+                    answer: "Ans. You can cancel your e-Ticket before four hrs of scheduled departure time of originating bus station. No refund will be given after expiry of permissible period of cancellation so cancel e-Ticket, we request to login then go to my tickets link on the left navigation bar, select ticket to be cancelled and click on cancel link."
+                },
+                {
+                    question: "Q.8 - What are the cancellation charges applicable?",
+                    answer: "Ans. Cancellation is allowed before four hrs of departure time of originating bus station. Following cancellation charges are applicable: <br> i. 10% of the ticket fare will be deducted if the ticket is canceled 24 hours before the departure time. <br> ii. 25% of the ticket fare will be deducted if the ticket is canceled 12 hours before the departure time. <br> iii. 50% of the ticket fare will be deducted if the ticket is canceled 4 hours before the departure time."
+                },
+                {
+                    question: "Q.9 - Can I get refund of fare in case of non performance of journey?",
+                    answer: "Ans. - No refund."
+                }
+            ];
+
+            // A real PHP file (e.g., `get_faqs.php`) might look something like this:
+            //
+            // <?php
+            //     header('Content-Type: application/json');
+            //     $faqs = [
+            //         ['question' => '...', 'answer' => '...'],
+            //         ['question' => '...', 'answer' => '...'],
+            //     ];
+            //     echo json_encode($faqs);
+            // ?>
+            //
+            // And you would fetch it like this:
+            // fetch('get_faqs.php')
+            //     .then(response => response.json())
+            //     .then(faqData => createFaqItems(faqData))
+            //     .catch(error => console.error('Error fetching FAQs:', error));
+
+
+            // Function to create the HTML elements for each FAQ item
+            const createFaqItems = (data) => {
+                const faqContainer = document.getElementById('faq-container');
+                faqContainer.innerHTML = ''; // Clear any existing content
+
+                data.forEach((item, index) => {
+                    // Create the main container for the FAQ item
+                    const faqItem = document.createElement('div');
+                    faqItem.className = 'bg-white shadow-md rounded-lg overflow-hidden';
+                    
+                    // Create the clickable header for the question
+                    const questionHeader = document.createElement('button');
+                    questionHeader.className = 'flex justify-between items-center w-full p-4 md:p-6 text-left font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500';
+                    questionHeader.innerHTML = `
+                        <span class="text-base md:text-lg">${item.question}</span>
+                        <svg class="chevron w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    `;
+                    
+                    // Create the answer content div
+                    const answerContent = document.createElement('div');
+                    answerContent.className = 'p-4 md:p-6 text-sm md:text-base text-gray-600 border-t border-gray-200 hidden';
+                    answerContent.innerHTML = item.answer;
+
+                    // Append elements to the FAQ item container
+                    faqItem.appendChild(questionHeader);
+                    faqItem.appendChild(answerContent);
+                    faqContainer.appendChild(faqItem);
+
+                    // Add a click event listener to the question header
+                    questionHeader.addEventListener('click', () => {
+                        // Toggle the visibility of the answer
+                        answerContent.classList.toggle('hidden');
+                        
+                        // Toggle the rotation of the chevron icon
+                        const chevron = questionHeader.querySelector('.chevron');
+                        chevron.classList.toggle('rotated');
+                    });
+                });
+            };
+
+            // Call the function with the FAQ data to populate the page
+            createFaqItems(faqData);
+        });
+    </script>
+</body>
+</html>

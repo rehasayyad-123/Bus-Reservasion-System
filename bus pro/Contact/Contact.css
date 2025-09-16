@@ -1,0 +1,96 @@
+body {
+    font-family: sans-serif;
+    background-color: #f3f4f6; /* Light gray background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0;
+}
+
+
+
+.navbar{
+  text-align: center;
+  background-color: aqua;
+  font-weight: 900;
+  font-size: xx-large;
+}
+
+
+.contact-container {
+    max-width: 600px;
+    width: 100%;
+    background-color: #ffffff; /* White background for the main card */
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 32px;
+}
+
+.contact-section {
+    margin-bottom: 32px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937; /* Dark gray text */
+    margin-bottom: 16px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #e5e7eb; /* Light gray separator line */
+    margin: 32px 0;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: baseline;
+    color: #4b5563; /* Medium gray text */
+    font-size: 1.125rem;
+}
+
+.chevron {
+    color: #4f46e5; /* Indigo color for the chevron */
+    font-weight: bold;
+    font-size: 1.25rem;
+    margin-right: 8px;
+}
+
+.label {
+    font-weight: 600;
+    width: 180px; /* Fixed width for labels to align content */
+    flex-shrink: 0;
+}
+
+.link, .value {
+    color: #4f46e5; /* Indigo color for links and values */
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.note {
+    font-size: 0.875rem;
+    color: #6b7280; /* Lighter gray for notes */
+    margin-left: 8px;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 640px) {
+    .contact-container {
+        padding: 24px;
+    }
+    .label {
+        width: 150px; /* Adjust label width for smaller screens */
+    }
+}

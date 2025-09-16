@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make a Payment</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        /* Style for the logo in the center of the QR code */
+        .upi-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px; /* Adjust size as needed */
+            height: 50px; /* Adjust size as needed */
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        /* SVG for the UPI logo */
+        .upi-logo-svg {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center p-4">
+
+    <!-- Main card container -->
+    <div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl max-w-sm w-full text-center">
+        
+        <!-- Header -->
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Scan & Pay</h1>
+        <p class="text-sm text-gray-500 mb-6">Use any UPI app to make a payment</p>
+
+        <!-- QR Code Section -->
+        <div class="relative bg-white p-4 rounded-xl shadow-inner mb-6">
+            <!-- QR Code placeholder image -->
+            <img src="./WhatsApp Image 2025-08-20 at 4.16.07 AM.jpeg" alt="QR Code Placeholder" class="w-full rounded-lg">
+            
+            <!-- UPI Logo overlay -->
+            <div class="upi-logo">
+                <svg class="upi-logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" fill="#000000"/>
+                    <path d="M12.015 8.16l2.913-2.912a.5.5 0 0 1 .707.707l-3.268 3.268a.5.5 0 0 1-.707 0L8.414 6.955a.5.5 0 0 1 .707-.707L12.015 8.16z" fill="#000000"/>
+                    <path d="M14.07 15.536L12.985 14.45l-.707-.707-1.168 1.168a.5.5 0 0 1-.707 0l-.707-.707a.5.5 0 0 1 0-.707l1.414-1.414a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 0 1 0 .707l-.707.707a.5.5 0 0 1-.707 0z" fill="#000000"/>
+                    <path d="M16.956 12.001a.5.5 0 0 1 0-.707l.707-.707a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 0 1 0 .707l-.707.707a.5.5 0 0 1-.707 0l-1.414-1.414zM7.044 12.001a.5.5 0 0 1 0-.707l-.707-.707a.5.5 0 0 1-.707 0l-1.414 1.414a.5.5 0 0 1 0 .707l.707.707a.5.5 0 0 1 .707 0l1.414-1.414z" fill="#000000"/>
+                    <path d="M14.803 17.55a.5.5 0 0 1-.707 0l-.707-.707a.5.5 0 0 1 .707-.707l.707.707a.5.5 0 0 1 0 .707zM9.197 17.55a.5.5 0 0 1-.707 0l-.707-.707a.5.5 0 0 1 .707-.707l.707.707a.5.5 0 0 1 0 .707z" fill="#000000"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- UPI ID and Copy Button -->
+        <div class="mb-6">
+            <p class="text-sm font-semibold text-gray-600 mb-2">UPI ID:</p>
+            <div class="relative flex items-center bg-gray-100 rounded-lg p-2 shadow-sm">
+                <input 
+                    id="upi-id" 
+                    type="text" 
+                    value="8446575726@ibl" 
+                    class="flex-1 bg-transparent text-gray-800 text-sm font-medium focus:outline-none p-1" 
+                    readonly>
+                <button 
+                    id="copy-btn" 
+                    class="bg-emerald-500 text-white p-2 rounded-md hover:bg-emerald-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 flex-shrink-0"
+                    aria-label="Copy UPI ID">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7v4a2 2 0 002 2h4a2 2 0 002-2V7m-4 12a2 2 0 01-2-2v-2a2 2 0 012-2h4a2 2 0 012 2v2a2 2 0 01-2 2H10z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="text-gray-500 text-xs">
+            <p>1. Open your UPI app and scan the QR code.</p>
+            <p>2. You can also copy the UPI ID and use it to pay.</p>
+        </div>
+        
+    </div>
+
+    <!-- JavaScript for the copy to clipboard functionality and message box -->
+    <script>
+        const copyBtn = document.getElementById('copy-btn');
+        const upiIdInput = document.getElementById('upi-id');
+        
+        copyBtn.addEventListener('click', () => {
+            const upiId = upiIdInput.value;
+            // Use an alternative method for copying text to clipboard in iframes
+            const tempInput = document.createElement('textarea');
+            tempInput.value = upiId;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            // Provide user feedback
+            const originalBtnText = copyBtn.innerHTML;
+            copyBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            `;
+            setTimeout(() => {
+                copyBtn.innerHTML = originalBtnText;
+            }, 2000);
+        });
+    </script>
+
+</body>
+</html>

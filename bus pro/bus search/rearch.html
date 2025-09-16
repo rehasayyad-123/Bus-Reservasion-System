@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Search</title>
+    <!-- Use Tailwind CSS for easy and responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the table and pagination */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+        }
+
+        .navbar{
+  text-align: center;
+  background-color: aqua;
+  font-weight: 900;
+  font-size: xx-large;
+}
+
+        .table-header {
+            background-color: #ffde54;
+        }
+        .table-container {
+            overflow-x: auto;
+            border-radius: 0.5rem;
+        }
+        .pagination-link {
+            transition: all 0.2s;
+        }
+        .pagination-link.active, .pagination-link:hover {
+            background-color: #ffde54;
+            color: #000;
+        }
+        .table-row-link {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .table-row-link:hover {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <header class="navbar">
+        <a href="../Home.html">Home</a> 
+    </header>
+
+    <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <!-- Header with Entries per page and Search bar -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-2">
+                <span class="text-sm text-gray-700">Show</span>
+                <select id="entriesPerPage" class="p-2 border rounded-md text-sm cursor-pointer">
+                    <option value="10">10</option>
+                    <option value="15" selected>15</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+                <span class="text-sm text-gray-700">entries per page</span>
+            </div>
+            <div class="relative w-full sm:w-auto">
+                <input type="text" id="searchInput" placeholder="Search:" class="w-full sm:w-64 p-2 pl-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Bus Reservation Table -->
+        <div class="table-container shadow-md">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="table-header text-xs uppercase text-gray-800">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left tracking-wider cursor-pointer">
+                            <div class="flex items-center">
+                                Jamkhed to Bus
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left tracking-wider cursor-pointer">
+                            <div class="flex items-center">
+                                Departure Time
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left tracking-wider cursor-pointer">
+                            <div class="flex items-center">
+                                Bus Route
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                </svg>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="busTableBody" class="bg-white divide-y divide-gray-200 text-sm text-gray-800">
+                    <!-- Table rows will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Table Information and Pagination Footer -->
+        <div class="mt-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+            <div id="tableInfo" class="text-sm text-gray-600">
+                <!-- "Showing X to Y of Z entries" will be inserted here -->
+            </div>
+            <div class="flex items-center space-x-1" id="paginationControls">
+                <!-- Pagination links will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Static Data Simulation ---
+        // This array simulates data that would come from a database query.
+        // In a real PHP application, this data would be fetched from a server.
+        const busData = [
+            { id: 1, origin: 'Ahmednagar', departure: '7:45, 10:00, 12:00, 14:30, 15:30, 17:00, 18:00, 18:15', route: '-' },
+            { id: 2, origin: 'Akluj', departure: '12:30', route: '-' },
+            { id: 3, origin: 'Alandi', departure: '11:30, 12:30, 14:30, 16:30', route: '-' },
+            { id: 4, origin: 'Ambajogai', departure: '00:30, 3:30, 13:30, 18:15, 18:30', route: 'Patoda, Manjarsumbha, Kej' },
+            { id: 5, origin: 'Amala', departure: '07:45', route: '-' },
+            { id: 6, origin: 'Chatrapati Sambhaji Nagar (Aurangabad)', departure: '11:30, 14:45', route: '-' },
+            { id: 7, origin: 'Baramati', departure: '7:30, 8:15, 10:15, 11:00, 12:15, 14:30, 15:30, 17:45', route: 'Patoda, Karjat, Rashin' },
+            { id: 8, origin: 'Barshi', departure: '8:30, 11:30', route: '-' },
+            { id: 9, origin: 'Beed', departure: '2:15, 4:00, 5:30, 7:00, 7:30 9:00am to 9:30 on Every 15-30 Minutes', route: '-' },
+            { id: 10, origin: 'Bhiwandi', departure: '9:30, 10:30, 11:00, 11:30, 22:00', route: 'Ashti, Kada, Ahmednagar Tarakpur, Belha, Alephata, Otur, Bankar Fata, Murbad, Kalyan' },
+            { id: 11, origin: 'Bhokar', departure: '09:30', route: '-' },
+            { id: 12, origin: 'Bhoom', departure: '6:00, 7:00, 9:45, 11:00, 12:30, 13:00, 13:30, 14:30, 15:15, 17:30, 18:00, 19:00', route: 'Kharda, Pathrud, Warud' },
+            { id: 13, origin: 'Bidar', departure: '10:15', route: '-' },
+            { id: 14, origin: 'Boisar', departure: '09:00', route: '-' },
+            { id: 15, origin: 'Borivali', departure: '8:45, 9:30, 16:15, 18:05, 20:15, 20:30, 23:00', route: 'Ashti, Kada, Ahmednagar Tarakpur, Belha, Alephata, Otur, Bankar Fata, Murbad, Kalyan' },
+            { id: 16, origin: 'Chiplun', departure: '10:00', route: '-' },
+            { id: 17, origin: 'Degloor', departure: '14:15', route: '-' },
+            { id: 18, origin: 'Dharur', departure: '12:45, 13:30, 14:00, 16:00', route: '-' },
+            { id: 19, origin: 'Gangakhed', departure: '1:00, 10:45, 13:00', route: 'Patoda, Manjarsumbha, Kej, Ambajogai, Parali, Gangakhed' },
+            { id: 20, origin: 'Hyderabad', departure: '22:00', route: '-' },
+            { id: 21, origin: 'Jalna', departure: '7:30, 13:30', route: '-' },
+            { id: 22, origin: 'Kalamb', departure: '13:15, 14:00, 14:30, 16:00', route: '-' },
+            { id: 23, origin: 'Kalyan', departure: '11:00, 13:30, 21:00', route: 'Ashti, Kada, Ahmednagar, Murbad' },
+            { id: 24, origin: 'Kandhar', departure: '14:40', route: '-' },
+            { id: 25, origin: 'Karmala', departure: '06:30, 08:30, 09:00, 10:00, 10:30, 11:30, 12:30, 13:30, 14:30, 15:30, 16:30, 17:30, 18:30', route: '-' },
+            { id: 26, origin: 'Khed', departure: '12:00', route: 'Ashti, Kada, Ahmednagar, Ranjangaon, Shikrapur, New Shivaji Nagar Pune, Swargate, Poud, Mangaon, Lonere, Mahad, Poladpur, Kashedi' },
+            { id: 27, origin: 'Kolhapur', departure: '9:00, 9:30', route: 'Patoda, Karjat, Rashin, Baramati, Phaltan, Satara, Karad, Peth Naka' },
+            { id: 28, origin: 'Lasalgaon', departure: '13:15', route: '-' },
+            { id: 29, origin: 'Latur', departure: '00:30, 7:30, 11:15, 12:00, 14:30', route: 'Ashti, Kada, Ahmednagar, Ambajogai' },
+            { id: 30, origin: 'Majalgaon', departure: '11:00, 17:00', route: '-' },
+            { id: 31, origin: 'Malegaon', departure: '10:15', route: '-' },
+            { id: 32, origin: 'Mandangad', departure: '11:00', route: '-' },
+            { id: 33, origin: 'Mangaon', departure: '10:00', route: '-' },
+            { id: 34, origin: 'Mumbai Central', departure: '7:00, 8:15, 9:15, 9:30, 10:00, 11:30, 18:00, 18:45, 19:15, 20:00, 21:30, 21:45, 22:00, 22:30', route: 'Ahmednagar, Shirur, Ranjangaon, Shikrapur, New Shivaji Nagar Pune, Chinchwad, Panvel, Nerul, Vashi, Kurla Nehru Nagar, Sion, Dadar' },
+            { id: 35, origin: 'Nanded', departure: '00:30 Sleeper (via Parali)', route: 'Patoda, Manjarsumbha, Kej, Ambajogai, Parali, Gangakhed, Loh' },
+            { id: 36, origin: 'Nashik', departure: '9:30, 10:15, 11:15, 12:00, 13:00, 14:30, 15:30, 21:30, 22:00, 23:00', route: '-' },
+            { id: 37, origin: 'Nilanga – Latur', departure: '10:30', route: '-' },
+            { id: 38, origin: 'Dharashiv (Osmanabad)', departure: '08:45', route: '-' },
+            { id: 39, origin: 'Parali', departure: '1:00, 3:00, 3:30, 10:00, 14:30, 16:30, 17:10', route: '-' },
+            { id: 40, origin: 'Parbhani', departure: '7:00, 12:00', route: '-' },
+            { id: 41, origin: 'Parner', departure: '13:30, 14:30', route: '-' },
+            { id: 42, origin: 'Patoda', departure: '5:30, 14:15, 17:00, 17:30, 18:30, 19:30', route: '-' },
+            { id: 43, origin: 'New Shivaji Nagar (Pune)', departure: '00:00, 00:30, 1:00, 1:30, 2:30, 5:30, 6:00, 6:45, 7:00, 7:15, 7:30, 8:00, 8:30, 8:45, 9:30, 10:00, 10:45, 11:00, 11:15, 11:30, 12:00, 12:15, 12:30, 13:00, 13:15, 13:30, 14:00, 14:30, 15:00, 15:15, 16:00, 16:30, 17:00, 17:30, 18:00, 23:30', route: 'Ahmednagar, Shirur, Ranjangaon, Shikrapur, New Shivaji Nagar Pune – Wakdewadi' },
+            { id: 44, origin: 'Satara', departure: '13:30', route: 'Patoda, Karjat, Rashin, Baramati, Phaltan' },
+            { id: 45, origin: 'Shegaon', departure: '10:15', route: '-' },
+            { id: 46, origin: 'Shirdi', departure: '10:15', route: 'Pune, Nashik' },
+            { id: 47, origin: 'Solapur', departure: '12:00, 15:00', route: 'Pandharpur, Sangola' },
+            { id: 48, origin: 'Shrigonda', departure: '09:00, 14:00', route: '-' },
+            { id: 49, origin: 'Tarakpur', departure: '11:00', route: 'Ahmednagar' },
+            { id: 50, origin: 'Tuljapur', departure: '14:30', route: 'Osmanabad, Latur' },
+            { id: 51, origin: 'Vashi', departure: '11:30, 16:00', route: 'Pune, Mumbai' },
+            { id: 52, origin: 'Wakad', departure: '12:00', route: 'Pune' },
+            { id: 53, origin: 'Warud', departure: '09:00, 13:00', route: '-' },
+            { id: 54, origin: 'Yeola', departure: '10:00', route: 'Nashik' },
+            { id: 55, origin: 'Zirabad', departure: '08:00', route: 'Pune, Latur' },
+            { id: 56, origin: 'Pandharpur', departure: '11:00, 15:00', route: 'Solapur, Sangola' }
+        ];
+
+        // --- Global State Variables ---
+        let currentPage = 1;
+        let currentEntriesPerPage = 15;
+        let filteredData = [...busData];
+
+        // --- DOM Elements ---
+        const busTableBody = document.getElementById('busTableBody');
+        const searchInput = document.getElementById('searchInput');
+        const entriesPerPageSelect = document.getElementById('entriesPerPage');
+        const paginationControls = document.getElementById('paginationControls');
+        const tableInfo = document.getElementById('tableInfo');
+
+        // --- Core Functions ---
+
+        /**
+         * Renders the table rows based on the current page, entries per page, and filtered data.
+         */
+        function renderTable() {
+            // Clear existing table rows
+            busTableBody.innerHTML = '';
+
+            // Calculate start and end index for the current page
+            const startIndex = (currentPage - 1) * currentEntriesPerPage;
+            const endIndex = startIndex + currentEntriesPerPage;
+            const dataToDisplay = filteredData.slice(startIndex, endIndex);
+
+            // Populate the table with the data for the current page
+            if (dataToDisplay.length > 0) {
+                dataToDisplay.forEach(bus => {
+                    const row = document.createElement('tr');
+                    row.className = 'table-row-link';
+                    // The `onclick` event could be used to navigate to a booking page
+                    row.onclick = () => alert(`Viewing details for route from ${bus.origin}.`);
+
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">${bus.origin}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${bus.departure}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${bus.route}</td>
+                    `;
+                    busTableBody.appendChild(row);
+                });
+            } else {
+                busTableBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-gray-500">No results found.</td></tr>`;
+            }
+
+            // Update the table information footer
+            updateTableInfo();
+        }
+
+        /**
+         * Renders the pagination controls (page numbers).
+         */
+        function renderPagination() {
+            // Clear existing pagination links
+            paginationControls.innerHTML = '';
+
+            const totalPages = Math.ceil(filteredData.length / currentEntriesPerPage);
+
+            if (totalPages > 1) {
+                // "Previous" button
+                paginationControls.innerHTML += `
+                    <button id="prevPage" class="px-3 py-1 text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                `;
+
+                // Page number buttons
+                for (let i = 1; i <= totalPages; i++) {
+                    const activeClass = i === currentPage ? 'bg-yellow-400' : 'bg-gray-200';
+                    paginationControls.innerHTML += `
+                        <button class="pagination-link px-3 py-1 text-sm font-medium rounded-md text-gray-700 ${activeClass}" data-page="${i}">${i}</button>
+                    `;
+                }
+
+                // "Next" button
+                paginationControls.innerHTML += `
+                    <button id="nextPage" class="px-3 py-1 text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                `;
+
+                // Add event listeners to the new pagination buttons
+                addPaginationListeners();
+            }
+        }
+
+        /**
+         * Updates the "Showing X to Y of Z entries" text.
+         */
+        function updateTableInfo() {
+            const startIndex = (currentPage - 1) * currentEntriesPerPage + 1;
+            const endIndex = Math.min(startIndex + currentEntriesPerPage - 1, filteredData.length);
+            tableInfo.textContent = `Showing ${startIndex} to ${endIndex} of ${filteredData.length} entries`;
+        }
+
+        /**
+         * Attaches event listeners for the pagination controls.
+         */
+        function addPaginationListeners() {
+            document.querySelectorAll('.pagination-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    currentPage = parseInt(link.dataset.page);
+                    renderTable();
+                    renderPagination(); // Re-render to update active state
+                });
+            });
+
+            document.getElementById('prevPage').addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                    renderPagination();
+                }
+            });
+
+            document.getElementById('nextPage').addEventListener('click', () => {
+                const totalPages = Math.ceil(filteredData.length / currentEntriesPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable();
+                    renderPagination();
+                }
+            });
+        }
+
+
+        // --- Event Listeners for User Interaction ---
+
+        // Search Input Event Listener
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            filteredData = busData.filter(bus => {
+                return (
+                    bus.origin.toLowerCase().includes(searchTerm) ||
+                    bus.departure.toLowerCase().includes(searchTerm) ||
+                    bus.route.toLowerCase().includes(searchTerm)
+                );
+            });
+            currentPage = 1; // Reset to the first page after filtering
+            renderTable();
+            renderPagination();
+        });
+
+        // Entries Per Page Select Listener
+        entriesPerPageSelect.addEventListener('change', () => {
+            currentEntriesPerPage = parseInt(entriesPerPageSelect.value);
+            currentPage = 1; // Reset to the first page
+            renderTable();
+            renderPagination();
+        });
+
+        // --- Initial Render on Page Load ---
+        window.onload = function() {
+            renderTable();
+            renderPagination();
+        };
+
+    </script>
+</body>
+</html>
